@@ -26,4 +26,13 @@ static inline void *acpi_rsdp_get(void)
 	return bios_acpi_rsdp_get();
 }
 #endif /* CONFIG_X86_EFI */
+
+static inline uint64_t acpi_timer_get(void)
+{
+    uint32_t reg_hi, reg_lo;
+
+    __asm__ volatile("rdtsc" : "=d"(reg_hi), "=a"(reg_lo));
+    return reg_lo + (((uint64_t)reg_hi) << 32);
+}
+
 #endif /* ZEPHYR_ARCH_X86_INCLUDE_X86_ACPI_H_ */
